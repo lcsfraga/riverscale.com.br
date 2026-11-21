@@ -1,0 +1,26 @@
+# River Scale
+
+> River Scale (Agência River) é uma agência brasileira de tráfego pago e performance digital, em operação desde 2022. Constrói sistemas de aquisição que transformam atenção em receita previsível, com operação conduzida por Meta Certified Associates.
+
+## Serviços
+
+- Mídia paga de performance (gestão de tráfego pago, Meta Ads) focada em receita e cliente pagante
+- Dados e atribuição: Pixel, GA4, Conversions API (CAPI) e eventos personalizados
+- Social media estratégico e design de performance (criativos para campanhas, feed e stories)
+- Web design: sites institucionais, landing pages e funis de vendas de alta conversão
+- Posicionamento digital, SEO técnico e CRO contínuo
+- Dashboard de ROAS, CAC e LTV com reuniões quinzenais de decisão
+
+## River Method™
+
+1. Diagnóstico de receita
+2. Arquitetura de aquisição
+3. Mídia paga e criativo
+4. Escala e previsibilidade
+
+## Contato
+
+- Site: https://riverscale.com.br/
+- Diagnóstico gratuito: https://riverscale.com.br/#contato
+- E-mail: contato@riverscale.com.br
+- Instagram: https://www.instagram.com/river.scale/
