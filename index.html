@@ -411,7 +411,7 @@ background: radial-gradient(120% 90% at 50% 0%, var(--dr-bg-2) 0%, var(--dr-bg-1
 animation: dr-fade-in 1.2s ease-out both; }
 .dr-root--contained { position: absolute; }
 .dr-root canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.dr-bloom { opacity: var(--dr-bloom-opacity); mix-blend-mode: screen; image-rendering: auto; }
+.dr-bloom { filter: blur(var(--dr-bloom-blur)); opacity: var(--dr-bloom-opacity); mix-blend-mode: screen; image-rendering: auto; }
 .dr-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 45%, rgb(2 8 18 / var(--dr-vignette)) 100%); }
 .dr-grain { position: absolute; inset: -50%; opacity: var(--dr-grain); mix-blend-mode: overlay;
 background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
@@ -527,8 +527,7 @@ background: radial-gradient(60% 50% at 70% 30%, rgb(0 255 157 / .08), transparen
 .js [data-blur].is-in .w { transform: none; }
 .js [data-appear] { transition-duration: .42s; transition-delay: min(var(--d, 0s), .12s); }
 .js [data-appear="slide-up"] { transform: translateY(14px); }
-.dr-grain { display: none; }
-.tile-emblem img, .wb-media img { filter: none; }
+.wb-media img { filter: none; }
 .bento-visual, .web-visual { transform: translateZ(0); }
 .pillar:hover { transform: none; }
 }
@@ -545,6 +544,10 @@ background: radial-gradient(60% 50% at 70% 30%, rgb(0 255 157 / .08), transparen
 .nav { padding-inline: .75rem; }
 .burger { width: 2.25rem; height: 2.25rem; }
 }
+.hero-wrap .card { background: linear-gradient(to bottom right, rgb(10 25 47 / .85), rgb(10 25 47 / .45)); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.nav-bar { background: rgb(10 25 47 / .85); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.js .hero [data-blur] .w { opacity: 0; filter: blur(10px); transform: none; transition: opacity .6s cubic-bezier(.45,0,.55,1), filter .6s cubic-bezier(.45,0,.55,1); transition-delay: calc(var(--i) * 40ms); }
+.js .hero [data-blur].is-in .w { opacity: 1; filter: none; }
 </style>
   <script>document.documentElement.classList.add('js');</script>
 </head>
@@ -1285,8 +1288,8 @@ background: radial-gradient(60% 50% at 70% 30%, rgb(0 255 157 / .08), transparen
       w = nw; h = nh; dpr = d;
       main.width = Math.max(1, Math.round(w * dpr));
       main.height = Math.max(1, Math.round(h * dpr));
-      bw = Math.max(1, Math.ceil(w / 10)); bh = Math.max(1, Math.ceil(h / 10));
-      if (bctx) { bloom.width = bw; bloom.height = bh; bctx.imageSmoothingEnabled = true; bctx.imageSmoothingQuality = 'high'; }
+      bw = Math.max(1, Math.ceil(w / 4)); bh = Math.max(1, Math.ceil(h / 4));
+      if (bctx) { bloom.width = bw; bloom.height = bh; bctx.imageSmoothingEnabled = true; bctx.imageSmoothingQuality = 'medium'; }
       if (!initialised) return;
       if (reduced) { rebuildStatic(); return; }
       for (let i = 0; i < active; i++) if (px[i] < -120 || px[i] > w + 120 || py[i] > h + 40) seedParticle(i, false);
@@ -1357,7 +1360,7 @@ background: radial-gradient(60% 50% at 70% 30%, rgb(0 255 157 / .08), transparen
       initialised = true;
       rebuildStatic();
     } else {
-      presim(props.lite ? 0.9 : 2.5);
+      presim(props.presim != null ? props.presim : props.lite ? 0.9 : 2.5);
       render();
       initialised = true;
       live = true;
@@ -1563,10 +1566,8 @@ window.addEventListener("DOMContentLoaded",function(){
   /* ---------- Hero DataRain (River palette, contained to the hero) ---------- */
   // started after the first paint so the hero text is never blocked by the particle warm-up
   if (window.DataRain) requestAnimationFrame(() => setTimeout(() => {
-    window.DataRain($('#dataRain'), (touch || small)
-      // mobile: lighter field, no bloom/grain pass, capped resolution; autopilot starts at once (no mouse to guide it)
-      ? { fullscreen: false, flowSpeed: 1, obstacleRadius: 54, autopilot: true, lite: true, maxDpr: 1.5, density: 650, maxFps: lowPower ? 30 : 0, touchIdle: 0.6 }
-      : { fullscreen: false, flowSpeed: 1, obstacleRadius: 64, autopilot: true });
+    // original hero look on every device (full field, bloom and grain); adaptive quality still protects slow devices
+    window.DataRain($('#dataRain'), { fullscreen: false, flowSpeed: 1, obstacleRadius: 64, autopilot: true, presim: touch ? 1 : 2.5 });
   }, 0));
 
   /* ---------- Pause infinite CSS animations while their block is off-screen ---------- */
